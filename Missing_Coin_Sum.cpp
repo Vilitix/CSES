@@ -18,11 +18,19 @@ void solve()
     int n;
     cin >> n;
     vector<int> tab(n) ;
-    for(int k=0;k<n;k++) cin>> tab[k];
+    ll sum = 0;
+    for(int k=0;k<n;k++) cin>> tab[k],sum+=tab[k];
     sort(tab.begin(),tab.end());
+    ll curr = 1;
     for(int i = 0;i<n;i++){
+        if (tab[i]>curr){
+            cout << curr << endl;
+            return;
+        }
+        curr+=tab[i];
         
     }
+    cout << curr << endl;
 }
 
 int main()

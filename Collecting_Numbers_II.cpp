@@ -17,53 +17,39 @@ void solve()
 { 
     int n,m;
     cin >> n >> m;
-    vector<pair<int,int>> tab(n) ;
-    for(int k=0;k<n;k++){
+    vector<int> tab(n+1) ;
+    vector<int> pos(n+1);
+    for(int k=1;k<=n;k++){
         int x;
         cin >> x;
-        tab[k] = mp(x,k);
+        tab[k] = x;
+        pos[x] = k;
     }
-    sort(tab.begin(),tab.end());
-    set<int> s;
     int round = 1;
     for(int i = 1;i<n;i++){
-        if (tab[i].second < tab[i-1].second){
-            s.insert(i);
-            round++;
-        }
+        if (pos[i] > pos[i+1])round++;
     }
-    vector<int> to_ind(n);
-    for(int i = 0;i<n;i++){
-        to_ind[tab[i].second] = i;
-    }
-    for (int i = 0;i<m;i++){
+    set<pair<int,int>> to_check;
+    for(int i = 0;i<m;i++){
         int x,y;
         cin >> x >> y;
-        y--,x--;
-        int realy= to_ind[y],realx=to_ind[x];
-        swap(tab[realy].second,tab[realx].second);
-        swap(to_ind[y],to_ind[x]);
-        if (x){
-            bool b = tab[realx].second < tab[realx-1].second;
-            if (b){
-                if (s.find(realx) == s.end()) round++,s.insert(realx);
-            }
-            else{
-                if (s.find(realx) != s.end()) round--,s.erase(realx);
-            }
-        } 
-        if (y){
-            bool b = tab[realy].second < tab[realy-1].second;
-            if (b){
-                if (s.find(realy) == s.end()) round++,s.insert(realy);
-            }
-            else{
-                if (s.find(realy) != s.end()) round--,s.erase(realy);
-            }
+        if (tab[x]>1) to_check.insert(mp(tab[x]-1,tab[x]));
+        if (tab[y]>1) to_check.insert(mp(tab[y]-1,tab[y]));
+        if (tab[y]<(n)) to_check.insert(mp(tab[y],tab[y]+1));
+        if (tab[x]<(n)) to_check.insert(mp(tab[x],tab[x]+1));
+        for (auto [a,b]:to_check){
+            round -= (pos[a] > pos[b]);
         }
-        
+        swap(tab[x],tab[y]);
+        pos[tab[x]]= x;
+        pos[tab[y]]= y;
+        for (auto [a,b]:to_check){
+            round += (pos[a] > pos[b]);
+        }
         cout << round << endl;
+        to_check.clear();
     }
+
 }
 
 int main()
