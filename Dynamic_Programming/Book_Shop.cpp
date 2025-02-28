@@ -25,6 +25,8 @@ void solve()
         for(int i = x;i>0;i--){
             if (i>=price[j]) nbpmax[i] = max(nbpmax[i],pages[j]+nbpmax[i-price[j]]);
         }
+        cout << " here " << endl;
+        for(auto x:nbpmax) cout << x << " ";
     }
     cout << nbpmax[x] << endl;
 }
