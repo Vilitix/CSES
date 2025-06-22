@@ -36,7 +36,7 @@ void solve()
             if (isin(cx,cy,n)){
                 if (dp[cx][cy] == INT_MAX){
                     q.push(mp(cx,cy));
-                    dp[cx][cy] = min(1+dp[curx][cury],dp[cx][cy]);
+                    dp[cx][cy] = 1+dp[curx][cury];
                 }
             }
         }
